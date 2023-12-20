@@ -1,0 +1,40 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+  
+  	function belongsToCompany(companyId) {
+      return exists(/databases/$(database)/documents/company/$(companyId)/user/$(request.auth.uid))
+		}
+    function companyExists(companyId) {
+      return exists(/databases/$(database)/documents/company/$(companyId))
+		}
+  
+  
+    // Catch-all safety net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+    
+    // Matches any document in the 'company' collection.
+    match /company/{companyId} {
+     	// Allow authenticated users to create new companies.
+      allow create: if request.auth != null
+      
+      // Allow access to the company doc.
+      allow get, update: if request.auth != null && belongsToCompany(companyId)
+      
+      // Allow access to all subcollections of the company doc.
+      match /{subcollection}/{document=**} {
+        allow read, write: if
+          request.auth != null &&
+          (belongsToCompany(companyId) || !companyExists(companyId))
+      }
+    }
+
+		// Allow users to read themselves
+    match /{path=**}/user/{userId} {
+      allow read: if resource.data.uid == request.auth.uid
+    }
+  }
+}

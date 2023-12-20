@@ -1,0 +1,23 @@
+{
+  "timeZone": "America/New_York",
+  "dependencies": {
+  },
+  "exceptionLogging": "STACKDRIVER",
+  "runtimeVersion": "V8",
+  "dataStudio": {
+    "name": "Embedded Auth",
+    "company": "Clear Analytics",
+    "companyUrl": "https://www.clear-analytics.com",
+    "logoUrl": "https://raw.githubusercontent.com/npm/logos/master/npm%20logo/npm-logo-red.png",
+    "addonUrl": "https://github.com/googledatastudio/example-connectors/tree/master/npm-downloads",
+    "supportUrl": "https://github.com/googledatastudio/community-connectors/issues",
+    "description": "demo",
+     "advancedServices": {
+      "schema": true,
+      "data": true
+    }
+  },
+   "oauthScopes": [
+    "https://www.googleapis.com/auth/bigquery.readonly"
+    ]
+}
